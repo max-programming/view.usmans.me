@@ -39,6 +39,7 @@
     "clsx": "^2.1.1",
     "kysely": "^0.28.2",
     "lucide-react": "^0.513.0",
+    "nitro-cloudflare-dev": "^0.2.2",
     "postcss": "^8.5.4",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
