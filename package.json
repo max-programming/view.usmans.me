@@ -6,24 +6,31 @@
   "scripts": {
     "dev": "vinxi dev",
     "build": "vinxi build",
-    "start": "vinxi start"
+    "start": "vinxi start",
+    "db:migrate": "tsx db/migrate.ts",
+    "db:create-admin": "tsx db/create-admin.ts"
   },
   "devDependencies": {
     "@types/bun": "latest",
     "@types/react": "^19.1.6",
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react": "^4.5.1",
+    "dotenv": "^16.5.0",
+    "tsx": "^4.19.4",
     "vite-tsconfig-paths": "^5.1.4"
   },
   "peerDependencies": {
     "typescript": "^5.8.3"
   },
   "dependencies": {
+    "@libsql/kysely-libsql": "^0.4.1",
     "@tailwindcss/postcss": "^4.1.8",
     "@tanstack/react-router": "^1.120.18",
     "@tanstack/react-start": "^1.120.18",
+    "bcryptjs": "^3.0.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "kysely": "^0.28.2",
     "lucide-react": "^0.513.0",
     "postcss": "^8.5.4",
     "react": "^19.1.0",
