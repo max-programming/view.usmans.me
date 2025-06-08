@@ -120,20 +120,6 @@ export const getPublicImageBySlug = createServerFn({ method: "GET" })
     }
   });
 
-// Get signed URL for image viewing
-export const getImageUrl = createServerFn({ method: "GET" })
-  .validator(z.object({ fileKey: z.string() }))
-  .middleware([authMiddleware])
-  .handler(async ({ data }) => {
-    try {
-      const signedUrl = await generateSignedUrl(data.fileKey);
-      return { url: signedUrl };
-    } catch (error) {
-      console.error("Error generating signed URL:", error);
-      throw new Error("Failed to generate image URL");
-    }
-  });
-
 export const uploadFileToR2 = createServerFn({ method: "POST" })
   .validator(z.instanceof(FormData))
   .middleware([authMiddleware])
