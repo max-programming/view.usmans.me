@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,6 +18,7 @@ export const Route = createFileRoute("/login")({
 });
 
 function LoginPage() {
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -28,7 +29,10 @@ function LoginPage() {
     e.preventDefault();
     setIsLoading(true);
     try {
-      await loginUser({ data: { username, password } });
+      const result = await loginUser({ data: { username, password } });
+      if (result.success) {
+        navigate({ to: "/images" });
+      }
       setErrorMessage("");
     } catch (error) {
       if (error instanceof Error) {
