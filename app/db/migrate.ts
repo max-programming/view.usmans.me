@@ -10,7 +10,7 @@ async function migrateToLatest() {
     provider: new FileMigrationProvider({
       fs,
       path,
-      migrationFolder: path.join(process.cwd(), "db", "migrations"),
+      migrationFolder: path.join(process.cwd(), "app", "db", "migrations"),
     }),
   });
 
