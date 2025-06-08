@@ -13,8 +13,11 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as LoginImport } from './routes/login'
 import { Route as AuthedImport } from './routes/_authed'
+import { Route as SlugImport } from './routes/$slug'
 import { Route as IndexImport } from './routes/index'
-import { Route as AuthedImagesImport } from './routes/_authed/images'
+import { Route as AuthedImagesIndexImport } from './routes/_authed/images.index'
+import { Route as AuthedImagesNewImport } from './routes/_authed/images.new'
+import { Route as AuthedImagesSlugImport } from './routes/_authed/images.$slug'
 
 // Create/Update Routes
 
@@ -29,15 +32,33 @@ const AuthedRoute = AuthedImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const SlugRoute = SlugImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
 } as any)
 
-const AuthedImagesRoute = AuthedImagesImport.update({
-  id: '/images',
-  path: '/images',
+const AuthedImagesIndexRoute = AuthedImagesIndexImport.update({
+  id: '/images/',
+  path: '/images/',
+  getParentRoute: () => AuthedRoute,
+} as any)
+
+const AuthedImagesNewRoute = AuthedImagesNewImport.update({
+  id: '/images/new',
+  path: '/images/new',
+  getParentRoute: () => AuthedRoute,
+} as any)
+
+const AuthedImagesSlugRoute = AuthedImagesSlugImport.update({
+  id: '/images/$slug',
+  path: '/images/$slug',
   getParentRoute: () => AuthedRoute,
 } as any)
 
@@ -50,6 +71,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/$slug': {
+      id: '/$slug'
+      path: '/$slug'
+      fullPath: '/$slug'
+      preLoaderRoute: typeof SlugImport
       parentRoute: typeof rootRoute
     }
     '/_authed': {
@@ -66,11 +94,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
     }
-    '/_authed/images': {
-      id: '/_authed/images'
+    '/_authed/images/$slug': {
+      id: '/_authed/images/$slug'
+      path: '/images/$slug'
+      fullPath: '/images/$slug'
+      preLoaderRoute: typeof AuthedImagesSlugImport
+      parentRoute: typeof AuthedImport
+    }
+    '/_authed/images/new': {
+      id: '/_authed/images/new'
+      path: '/images/new'
+      fullPath: '/images/new'
+      preLoaderRoute: typeof AuthedImagesNewImport
+      parentRoute: typeof AuthedImport
+    }
+    '/_authed/images/': {
+      id: '/_authed/images/'
       path: '/images'
       fullPath: '/images'
-      preLoaderRoute: typeof AuthedImagesImport
+      preLoaderRoute: typeof AuthedImagesIndexImport
       parentRoute: typeof AuthedImport
     }
   }
@@ -79,11 +121,15 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 interface AuthedRouteChildren {
-  AuthedImagesRoute: typeof AuthedImagesRoute
+  AuthedImagesSlugRoute: typeof AuthedImagesSlugRoute
+  AuthedImagesNewRoute: typeof AuthedImagesNewRoute
+  AuthedImagesIndexRoute: typeof AuthedImagesIndexRoute
 }
 
 const AuthedRouteChildren: AuthedRouteChildren = {
-  AuthedImagesRoute: AuthedImagesRoute,
+  AuthedImagesSlugRoute: AuthedImagesSlugRoute,
+  AuthedImagesNewRoute: AuthedImagesNewRoute,
+  AuthedImagesIndexRoute: AuthedImagesIndexRoute,
 }
 
 const AuthedRouteWithChildren =
@@ -91,43 +137,76 @@ const AuthedRouteWithChildren =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/$slug': typeof SlugRoute
   '': typeof AuthedRouteWithChildren
   '/login': typeof LoginRoute
-  '/images': typeof AuthedImagesRoute
+  '/images/$slug': typeof AuthedImagesSlugRoute
+  '/images/new': typeof AuthedImagesNewRoute
+  '/images': typeof AuthedImagesIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/$slug': typeof SlugRoute
   '': typeof AuthedRouteWithChildren
   '/login': typeof LoginRoute
-  '/images': typeof AuthedImagesRoute
+  '/images/$slug': typeof AuthedImagesSlugRoute
+  '/images/new': typeof AuthedImagesNewRoute
+  '/images': typeof AuthedImagesIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/$slug': typeof SlugRoute
   '/_authed': typeof AuthedRouteWithChildren
   '/login': typeof LoginRoute
-  '/_authed/images': typeof AuthedImagesRoute
+  '/_authed/images/$slug': typeof AuthedImagesSlugRoute
+  '/_authed/images/new': typeof AuthedImagesNewRoute
+  '/_authed/images/': typeof AuthedImagesIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '' | '/login' | '/images'
+  fullPaths:
+    | '/'
+    | '/$slug'
+    | ''
+    | '/login'
+    | '/images/$slug'
+    | '/images/new'
+    | '/images'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '' | '/login' | '/images'
-  id: '__root__' | '/' | '/_authed' | '/login' | '/_authed/images'
+  to:
+    | '/'
+    | '/$slug'
+    | ''
+    | '/login'
+    | '/images/$slug'
+    | '/images/new'
+    | '/images'
+  id:
+    | '__root__'
+    | '/'
+    | '/$slug'
+    | '/_authed'
+    | '/login'
+    | '/_authed/images/$slug'
+    | '/_authed/images/new'
+    | '/_authed/images/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  SlugRoute: typeof SlugRoute
   AuthedRoute: typeof AuthedRouteWithChildren
   LoginRoute: typeof LoginRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  SlugRoute: SlugRoute,
   AuthedRoute: AuthedRouteWithChildren,
   LoginRoute: LoginRoute,
 }
@@ -143,6 +222,7 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/$slug",
         "/_authed",
         "/login"
       ]
@@ -150,17 +230,30 @@ export const routeTree = rootRoute
     "/": {
       "filePath": "index.tsx"
     },
+    "/$slug": {
+      "filePath": "$slug.tsx"
+    },
     "/_authed": {
       "filePath": "_authed.tsx",
       "children": [
-        "/_authed/images"
+        "/_authed/images/$slug",
+        "/_authed/images/new",
+        "/_authed/images/"
       ]
     },
     "/login": {
       "filePath": "login.tsx"
     },
-    "/_authed/images": {
-      "filePath": "_authed/images.tsx",
+    "/_authed/images/$slug": {
+      "filePath": "_authed/images.$slug.tsx",
+      "parent": "/_authed"
+    },
+    "/_authed/images/new": {
+      "filePath": "_authed/images.new.tsx",
+      "parent": "/_authed"
+    },
+    "/_authed/images/": {
+      "filePath": "_authed/images.index.tsx",
       "parent": "/_authed"
     }
   }

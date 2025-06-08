@@ -16,7 +16,7 @@ export interface ImagesTable {
   title: string;
   slug: string;
   description?: string;
-  filePublicUrl: string;
+  fileKey: string;
   visibility: "public" | "unlisted" | "private";
 }
 
