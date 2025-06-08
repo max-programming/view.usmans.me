@@ -35,6 +35,9 @@ type FileResult = {
 
 export const Route = createFileRoute("/_authed/images/new")({
   component: NewImagePage,
+  head: () => ({
+    meta: [{ title: "Add New Image" }],
+  }),
 });
 
 function NewImagePage() {

@@ -29,6 +29,9 @@ export const Route = createFileRoute("/_authed/images/$slug")({
     const image = await getImageBySlug({ data: { slug: params.slug } });
     return image;
   },
+  head: ({ loaderData }) => ({
+    meta: [{ title: loaderData?.title ?? "Image Viewer" }],
+  }),
 });
 
 function ImageDetailPage() {

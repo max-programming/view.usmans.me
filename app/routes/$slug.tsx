@@ -12,6 +12,9 @@ export const Route = createFileRoute("/$slug")({
       throw new Error("Image not found");
     }
   },
+  head: ({ loaderData }) => ({
+    meta: [{ title: loaderData?.title ?? "Image Viewer" }],
+  }),
   errorComponent: ({ error }) => (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="text-center">

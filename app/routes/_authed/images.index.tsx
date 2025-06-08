@@ -27,6 +27,9 @@ export const Route = createFileRoute("/_authed/images/")({
     const images = await getImages();
     return images;
   },
+  head: () => ({
+    meta: [{ title: "Images" }],
+  }),
 });
 
 function ImagesListPage() {
