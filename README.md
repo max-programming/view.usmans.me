@@ -1,15 +1,23 @@
 # view.usmans.me
 
-To install dependencies:
+Personal Image Storage (Like Imgur) to share images and diagrams primarily for my YouTube channel - Max Programming.
 
-```bash
-bun install
-```
+## Features
 
-To run:
+#### Admin-Only Features
+- Upload images
+- Delete images
+- View images
+- View image details
 
-```bash
-bun run index.ts
-```
+#### Public Features
+- View image through a public link
 
-This project was created using `bun init` in bun v1.2.4. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+## Tech Stack
+
+- TanStack Start
+- Tailwind CSS
+- Shadcn UI
+- SQLite (LibSQL)
+- Cloudflare R2
+- Netlify
